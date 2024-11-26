@@ -16,7 +16,7 @@ echo
 BUILD_DIR="build"
 EXECUTABLE="VectorAdditionOnGraphicsCard"
 
-# Step 3: Check if the build directory exists; if not, create it
+# Step 3: Check if the build directory exists
 if [[ ! -d "$BUILD_DIR" ]]; then
     echo "[INFO] Creating build directory: $BUILD_DIR"
     echo
@@ -24,6 +24,12 @@ if [[ ! -d "$BUILD_DIR" ]]; then
 else
     echo "[INFO] Build directory already exists: $BUILD_DIR"
     echo
+    # Check for incompatible CMake cache and clean the directory if needed
+    if [[ -f "$BUILD_DIR/CMakeCache.txt" ]]; then
+        echo "[WARNING] CMakeCache.txt detected. Cleaning build directory to avoid conflicts..."
+        echo
+        rm -rf "$BUILD_DIR/*"
+    fi
 fi
 
 # Step 4: Run CMake to configure the project
@@ -76,3 +82,4 @@ fi
 echo
 echo "[SUCCESS] Program executed successfully!"
 echo
+
