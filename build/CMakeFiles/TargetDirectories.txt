@@ -1,3 +1,0 @@
-/home/francois/Documents/Linux Documents/University (real)/Semester 9 Windows/Personal/OpenCL_practice/build/CMakeFiles/VectorAdditionOnGraphicsCard.dir
-/home/francois/Documents/Linux Documents/University (real)/Semester 9 Windows/Personal/OpenCL_practice/build/CMakeFiles/edit_cache.dir
-/home/francois/Documents/Linux Documents/University (real)/Semester 9 Windows/Personal/OpenCL_practice/build/CMakeFiles/rebuild_cache.dir
