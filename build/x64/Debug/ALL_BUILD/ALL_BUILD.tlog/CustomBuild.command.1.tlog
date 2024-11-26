@@ -1,0 +1,10 @@
+^E:\SCHOOL AND WORK\UNIVERSITY (REAL)\SEMESTER 9\PERSONAL\RUN CODE GPU\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SE:/School and Work/University (real)/Semester 9/Personal/Run code GPU" "-BE:/School and Work/University (real)/Semester 9/Personal/Run code GPU/build" --check-stamp-file "E:/School and Work/University (real)/Semester 9/Personal/Run code GPU/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,14 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
+project(VectorAdditionOnGraphicsCard)
 
-project(HelloOpenCL LANGUAGES C)
+# Specify C standard
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Include the OpenCL headers
-include_directories(E:/School and Work/University (real)/Semester 9/Personal/Run code GPU/vcpkg/installed/x64-windows/include)
+# Include directories for OpenCL
+include_directories(${CMAKE_SOURCE_DIR}/vcpkg/installed/x64-windows/include)
 
-# Link the OpenCL library
-link_directories(E:/School and Work/University (real)/Semester 9/Personal/Run code GPU/vcpkg/installed/x64-windows/lib)
+# Link directories for OpenCL
+link_directories(${CMAKE_SOURCE_DIR}/vcpkg/installed/x64-windows/lib)
 
-add_executable(${PROJECT_NAME} main.c)
+# Source files
+set(SOURCES main.c)
 
-# Link the OpenCL library to the executable
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenCL)
+# Ensure executable is placed in the project root build directory
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+# Add executable target
+add_executable(VectorAdditionOnGraphicsCard ${SOURCES})
+
+# Link OpenCL library
+target_link_libraries(VectorAdditionOnGraphicsCard OpenCL)
