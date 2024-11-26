@@ -222,9 +222,11 @@ void print_first_last10(float* arr1, float* arr2, float* arr_out, size_t N) {
 
 // Main function
 int main() {
+	printf("\n\n\n---------------------------- START OF PROGRAM ----------------------------\n\n\n");
 	printf("Listing available devices:\n");
 	list_devices();
 
+	// Write your Graphics Card Name here.
 	const char* target_board_name = "AMD Radeon RX 6750 XT";
 	device = select_device(target_board_name);
 	if (device == NULL) {

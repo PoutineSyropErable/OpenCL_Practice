@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Use Terminal, go to settings, and it will give you the command to go into microsoft visual studio 2022, or whatever version you have
 
 devps() {
     local command="$1"
