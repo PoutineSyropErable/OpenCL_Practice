@@ -114,7 +114,7 @@ char* read_kernel_source(const char* filename) {
 	return source;
 }
 
-// Function to initialize the OpenCL context
+// Function to initialize OpenCL context and resources
 OpenCLContext* context_create(size_t size) {
 	OpenCLContext* ctx = (OpenCLContext*)malloc(sizeof(OpenCLContext));
 	cl_int err;
@@ -145,19 +145,24 @@ OpenCLContext* context_create(size_t size) {
 	return ctx;
 }
 
-// Function to execute the kernel
-void context_execute(OpenCLContext* ctx, float* A, float* B, float* C, size_t size) {
+// Function to execute kernel and read results
+void vector_add(OpenCLContext* ctx, float* A, float* B, float* C, size_t size) {
+	cl_int err;
+
+	// Copy data to buffers
 	clEnqueueWriteBuffer(ctx->queue, ctx->bufferA, CL_TRUE, 0, size * sizeof(float), A, 0, NULL, NULL);
 	clEnqueueWriteBuffer(ctx->queue, ctx->bufferB, CL_TRUE, 0, size * sizeof(float), B, 0, NULL, NULL);
 
+	// Set kernel arguments
 	clSetKernelArg(ctx->kernel, 0, sizeof(cl_mem), &ctx->bufferA);
 	clSetKernelArg(ctx->kernel, 1, sizeof(cl_mem), &ctx->bufferB);
 	clSetKernelArg(ctx->kernel, 2, sizeof(cl_mem), &ctx->bufferC);
-	clSetKernelArg(ctx->kernel, 3, sizeof(int), &size);
 
+	// Execute the kernel
 	size_t globalSize = size;
 	clEnqueueNDRangeKernel(ctx->queue, ctx->kernel, 1, NULL, &globalSize, NULL, 0, NULL, NULL);
 
+	// Read back the results
 	clEnqueueReadBuffer(ctx->queue, ctx->bufferC, CL_TRUE, 0, size * sizeof(float), C, 0, NULL, NULL);
 }
 
@@ -198,7 +203,7 @@ int main() {
 		return 1;
 	}
 
-	context_execute(ctx, A, B, C, ARRAY_SIZE);
+	vector_add(ctx, A, B, C, ARRAY_SIZE);
 
 	printf("First 10 results:\n");
 	for (int i = 0; i < 10; i++) {
