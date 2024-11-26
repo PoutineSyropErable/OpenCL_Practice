@@ -13,3 +13,5 @@ check_and_install_both.bat
 check_and_install_OpenCL.bat
 check_and_install_vcpkg.bat
 uninstall_openCL.bat
+
+vcpkg/
