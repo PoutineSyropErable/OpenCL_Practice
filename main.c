@@ -227,7 +227,8 @@ int main() {
 	list_devices();
 
 	// Write your Graphics Card Name here.
-	const char* target_board_name = "AMD Radeon RX 6750 XT";
+	/* const char* target_board_name = "AMD Radeon RX 6750 XT"; */
+	const char* target_board_name = "AMD Radeon Graphics";
 	device = select_device(target_board_name);
 	if (device == NULL) {
 		printf("Failed to select device: %s\n", target_board_name);

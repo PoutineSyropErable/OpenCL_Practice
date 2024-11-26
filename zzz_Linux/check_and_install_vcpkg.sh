@@ -44,4 +44,4 @@ fi
 # Step 5: Success message
 echo "[INFO] vcpkg is ready."
 echo
-echo "[SUCCESS] vc
+echo "[SUCCESS] vcpkg got correctly installed"

@@ -17,7 +17,7 @@ fi
 # Step 3: Checking and Installing OpenCL
 echo "[INFO] Checking and Installing OpenCL"
 echo
-./check_and_install_openCL.sh
+./check_and_install_OpenCL.sh
 if [[ $? -ne 0 ]]; then
     echo "[ERROR] Failed to set up OpenCL. Exiting..."
     echo
