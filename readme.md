@@ -41,15 +41,24 @@ Move the build files from The Operating System to the root dir.
 
 Note, the build file, inside root dir are git ignored.
 
-Then windows: 
+For windows: 
+from developper powershell:
 .\build.bat 
 or 
 .\build_cmake.bat 
 
-from developper powershell. 
-.\build_linux.sh 
+For Linux:
+
+you must have opencl runtime. 
+for arch linux:
+yay -S rocm-opencl-runtime
+
+thats a proprietary runtime. If you want a foss, then you are skilled enough to download mesa or another one. 
+
+from a terminal 
+./build_linux.sh 
 or 
-.\build_cmake_linux.sh 
+./build_cmake_linux.sh 
 
 
 
