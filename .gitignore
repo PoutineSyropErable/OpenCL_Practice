@@ -15,3 +15,6 @@ check_and_install_vcpkg.bat
 uninstall_openCL.bat
 
 vcpkg/
+build/
+linux_build/
+bat_build/
