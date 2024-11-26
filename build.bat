@@ -1,10 +1,13 @@
 @echo off
+
+echo. 
+
 :: Set paths to OpenCL headers and libraries (quote paths to handle spaces)
 set INCLUDE_PATH="E:\School and Work\University (real)\Semester 9\Personal\Run code GPU\vcpkg\installed\x64-windows\include"
 set LIB_PATH="E:\School and Work\University (real)\Semester 9\Personal\Run code GPU\vcpkg\installed\x64-windows\lib"
 
 :: Set output executable name
-set OUTPUT=HelloOpenCL.exe
+set OUTPUT=VectorAdditionOnGraphicsCard
 
 :: Clean previous build
 if exist %OUTPUT% del %OUTPUT%
@@ -20,9 +23,11 @@ if errorlevel 1 (
 
 :: Success message
 echo Build succeeded! Executable: %OUTPUT%
+echo. 
 
 :: Run the program
 echo Running the program...
+echo. 
 %OUTPUT%
 if errorlevel 1 (
     echo Program execution failed.
@@ -30,5 +35,6 @@ if errorlevel 1 (
 )
 
 :: Success message
+echo.
 echo Program executed successfully!
 

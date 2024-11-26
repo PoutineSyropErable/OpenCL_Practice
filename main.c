@@ -145,6 +145,18 @@ OpenCLContext* context_create(size_t size) {
 	return ctx;
 }
 
+// Function to clean up OpenCL resources
+void context_cleanup(OpenCLContext* ctx) {
+	clReleaseMemObject(ctx->bufferA);
+	clReleaseMemObject(ctx->bufferB);
+	clReleaseMemObject(ctx->bufferC);
+	clReleaseProgram(ctx->program);
+	clReleaseKernel(ctx->kernel);
+	clReleaseCommandQueue(ctx->queue);
+	clReleaseContext(ctx->context);
+	free(ctx);
+}
+
 // Function to execute kernel and read results
 void vector_add(OpenCLContext* ctx, float* A, float* B, float* C, size_t size) {
 	cl_int err;
@@ -166,16 +178,46 @@ void vector_add(OpenCLContext* ctx, float* A, float* B, float* C, size_t size) {
 	clEnqueueReadBuffer(ctx->queue, ctx->bufferC, CL_TRUE, 0, size * sizeof(float), C, 0, NULL, NULL);
 }
 
-// Function to clean up OpenCL resources
-void context_cleanup(OpenCLContext* ctx) {
-	clReleaseMemObject(ctx->bufferA);
-	clReleaseMemObject(ctx->bufferB);
-	clReleaseMemObject(ctx->bufferC);
-	clReleaseProgram(ctx->program);
-	clReleaseKernel(ctx->kernel);
-	clReleaseCommandQueue(ctx->queue);
-	clReleaseContext(ctx->context);
-	free(ctx);
+void vector_add_single(float* A, float* B, float* C, size_t size) {
+	cl_int err;
+
+	OpenCLContext* ctx = context_create(ARRAY_SIZE);
+	if (!ctx) {
+		printf("Failed to create OpenCL context.\n");
+		exit(-1);
+	}
+
+	// Copy data to buffers
+	clEnqueueWriteBuffer(ctx->queue, ctx->bufferA, CL_TRUE, 0, size * sizeof(float), A, 0, NULL, NULL);
+	clEnqueueWriteBuffer(ctx->queue, ctx->bufferB, CL_TRUE, 0, size * sizeof(float), B, 0, NULL, NULL);
+
+	// Set kernel arguments
+	clSetKernelArg(ctx->kernel, 0, sizeof(cl_mem), &ctx->bufferA);
+	clSetKernelArg(ctx->kernel, 1, sizeof(cl_mem), &ctx->bufferB);
+	clSetKernelArg(ctx->kernel, 2, sizeof(cl_mem), &ctx->bufferC);
+
+	// Execute the kernel
+	size_t globalSize = size;
+	clEnqueueNDRangeKernel(ctx->queue, ctx->kernel, 1, NULL, &globalSize, NULL, 0, NULL, NULL);
+
+	// Read back the results
+	clEnqueueReadBuffer(ctx->queue, ctx->bufferC, CL_TRUE, 0, size * sizeof(float), C, 0, NULL, NULL);
+
+	context_cleanup(ctx);
+}
+
+void print_first_last10(float* arr1, float* arr2, float* arr_out, size_t N) {
+	printf("First 10 results:\n");
+	for (size_t i = 0; i < (N < 10 ? N : 10); i++) {
+		printf("a[%zu] = %f, b[%zu] = %f, c[%zu] = %f\n", i, arr1[i], i, arr2[i], i, arr_out[i]);
+	}
+
+	if (N > 10) {
+		printf("Last 10 results:\n");
+		for (size_t i = (N > 10 ? N - 10 : 0); i < N; i++) {
+			printf("a[%zu] = %f, b[%zu] = %f, c[%zu] = %f\n", i, arr1[i], i, arr2[i], i, arr_out[i]);
+		}
+	}
 }
 
 // Main function
@@ -191,7 +233,7 @@ int main() {
 	}
 	printf("\n\nSelected device: %s\n\n", target_board_name);
 
-	float A[ARRAY_SIZE], B[ARRAY_SIZE], C[ARRAY_SIZE];
+	float A[ARRAY_SIZE], B[ARRAY_SIZE], C[ARRAY_SIZE], D[ARRAY_SIZE];
 	for (int i = 0; i < ARRAY_SIZE; i++) {
 		A[i] = i;
 		B[i] = 3 * i;
@@ -205,15 +247,12 @@ int main() {
 
 	vector_add(ctx, A, B, C, ARRAY_SIZE);
 
-	printf("First 10 results:\n");
-	for (int i = 0; i < 10; i++) {
-		printf("a[%d] = %f, b[%d] = %f, c[%d] = %f\n", i, A[i], i, B[i], i, C[i]);
-	}
+	vector_add_single(A, B, D, ARRAY_SIZE);
 
-	printf("Last 10 results:\n");
-	for (int i = ARRAY_SIZE - 10; i < ARRAY_SIZE; i++) {
-		printf("a[%d] = %f, b[%d] = %f, c[%d] = %f\n", i, A[i], i, B[i], i, C[i]);
-	}
+	printf("\n-----Using a entire program lifetime context (function take context as input)\n");
+	print_first_last10(A, B, C, ARRAY_SIZE);
+	printf("\n-----Using a single function lifetime context (function create and destroy context)\n");
+	print_first_last10(A, B, D, ARRAY_SIZE);
 
 	context_cleanup(ctx);
 	return 0;
