@@ -2,6 +2,7 @@ The src is just  main.c and  vector_add.cl
 
 
 
+
 Those are the two files that get compiled. 
 The other files are build script.
 
@@ -38,6 +39,7 @@ My stuff
 Move the build files from The Operating System to the root dir. 
 (This is just to save clutter)
 
+Note, the build file, inside root dir are git ignored.
 
 Then windows: 
 .\build.bat 

@@ -1,0 +1,15 @@
+# Ignore Linux-specific build and setup scripts
+build_cmake_linux.sh
+build_linux.sh
+check_and_install_both.sh
+check_and_install_OpenCL.sh
+check_and_install_vcpkg.sh
+uninstall_OpenCL.sh
+
+# Ignore Windows-specific build and setup scripts
+build.bat
+build_cmake.bat
+check_and_install_both.bat
+check_and_install_OpenCL.bat
+check_and_install_vcpkg.bat
+uninstall_openCL.bat
