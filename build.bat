@@ -3,8 +3,8 @@
 echo. 
 
 :: Set paths to OpenCL headers and libraries (quote paths to handle spaces)
-set INCLUDE_PATH="E:\School and Work\University (real)\Semester 9\Personal\Run code GPU\vcpkg\installed\x64-windows\include"
-set LIB_PATH="E:\School and Work\University (real)\Semester 9\Personal\Run code GPU\vcpkg\installed\x64-windows\lib"
+set INCLUDE_PATH=".\vcpkg\installed\x64-windows\include"
+set LIB_PATH=".\vcpkg\installed\x64-windows\lib"
 
 :: Set output executable name
 set OUTPUT=VectorAdditionOnGraphicsCard
